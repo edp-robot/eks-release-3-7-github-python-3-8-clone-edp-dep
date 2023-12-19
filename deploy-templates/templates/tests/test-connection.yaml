@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "{{ include "python-3-8-clone-edp-dep.fullname" . }}-test-connection"
+  labels:
+    {{- include "python-3-8-clone-edp-dep.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": test-success
+spec:
+  containers:
+    - name: wget
+      image: busybox
+      command: ['wget']
+      args: ['{{ include "python-3-8-clone-edp-dep.fullname" . }}:{{ .Values.service.port }}']
+  restartPolicy: Never
